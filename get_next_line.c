@@ -66,7 +66,7 @@ char	*get_backup(char *stash)
 		return (NULL);
 	}
 	i++;
-	temp_stash = (char *)malloc(sizeof(char) * (strlen(stash) - i + 1));
+	temp_stash = (char *)malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
 	if (!temp_stash)
 		return (NULL);
 	j = 0;
@@ -86,7 +86,7 @@ char	*read_file(int fd, char *stash)
 	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	while (!(strchr(stash, '\n')) && bytes_read > 0)
+	while (!(ft_strchr(stash, '\n')) && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
