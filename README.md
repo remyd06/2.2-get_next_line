@@ -50,64 +50,46 @@ The `Makefile` will generate the `get_next_line.a` library, which you can use in
 
 ## Usage 🖥️
 
-To use **get_next_line**, simply include the header file `get_next_line.h` in your program and link the library during compilation.
+To use **get_next_line**, simply enable the main in `get_next_line.c`.
 Example:
 ```bash
 #include "get_next_line.h"
-#include <fcntl.h> // For open()
-#include <stdio.h> // For printf()
-
-int main(void)
+int	main(void)
 {
-    int fd = open("file.txt", O_RDONLY);
-    char *line;
+	char *line;
+	int fd;
 
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        printf("%s", line);
-        free(line);
-    }
-    close(fd);
-    return (0);
+	fd = open("./montexte.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		perror("Erreur lors de l'ouverture du fichier");
+		return (1);
+	}
+
+	printf("Contenu du fichier :\n");
+
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		printf("-------\n");
+		printf("%s", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+
+	close(fd);
+	return (0);
 }
-
 ```
 Compilation:
 ```bash
-gcc main.c get_next_line.a -o get_next_line_example
-
+gcc -Wall -Werror -Wextra get_next_line.c get_next_line_utils.c
 ```
 ## Bonus Features 🌟
 
 In the **bonus** part of the project, the function handles multiple file descriptors at once. Each file descriptor maintains its own static storage, so you can switch between reading different files without losing track of where you are in any given file.
 - **Multiple File Descriptors Support**: You can call `get_next_line` on multiple files or input streams, and it will return lines independently from each.
-Example:
-```bash
-#include "get_next_line_bonus.h"
 
-int main(void)
-{
-    int fd1 = open("file1.txt", O_RDONLY);
-    int fd2 = open("file2.txt", O_RDONLY);
-    char *line;
-
-    while ((line = get_next_line(fd1)) != NULL)
-    {
-        printf("File1: %s", line);
-        free(line);
-    }
-
-    while ((line = get_next_line(fd2)) != NULL)
-    {
-        printf("File2: %s", line);
-        free(line);
-    }
-
-    close(fd1);
-    close(fd2);
-    return (0);
-}
-```
 ## Understanding the Codebase 🧠
 
 **Key Concepts** 
@@ -117,3 +99,8 @@ int main(void)
 
 ## Testing 🧪
 
+Create a .txt file at the root of get_next_line, simple text with new lines and include the file path in the main.
+Example, at this line:
+```bash
+fd = open("./montexte.txt", O_RDONLY);
+```
