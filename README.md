@@ -74,8 +74,46 @@ int main(void)
 ```
 Compilation:
 ```bash
-
+gcc main.c get_next_line.a -o get_next_line_example
 
 ```
+## Bonus Features 🌟
 
+In the **bonus** part of the project, the function handles multiple file descriptors at once. Each file descriptor maintains its own static storage, so you can switch between reading different files without losing track of where you are in any given file.
+- **Multiple File Descriptors Support**: You can call `get_next_line` on multiple files or input streams, and it will return lines independently from each.
+Example:
+```bash
+#include "get_next_line_bonus.h"
+
+int main(void)
+{
+    int fd1 = open("file1.txt", O_RDONLY);
+    int fd2 = open("file2.txt", O_RDONLY);
+    char *line;
+
+    while ((line = get_next_line(fd1)) != NULL)
+    {
+        printf("File1: %s", line);
+        free(line);
+    }
+
+    while ((line = get_next_line(fd2)) != NULL)
+    {
+        printf("File2: %s", line);
+        free(line);
+    }
+
+    close(fd1);
+    close(fd2);
+    return (0);
+}
+```
+## Understanding the Codebase 🧠
+
+**Key Concepts** 
+- **Static Variables**: The project leverages static variables to store the current state of the read operation, allowing it to manage leftover data between calls to `get_next_line`.
+- **Buffer Management**: Each read operation uses a buffer of size `BUFFER_SIZE`, defined during compilation, allowing the function to read chunks of data efficiently.
+- **Memory Handling**: Each line read from the file is dynamically allocated. It is important to free the memory after each use to avoid memory leaks.
+
+## Testing 🧪
 
