@@ -44,9 +44,7 @@ To install and compile the **get_next_line** library:
 ```bash
 git clone https://github.com/yourusername/get_next_line.git
 cd get_next_line
-make
 ```
-The `Makefile` will generate the `get_next_line.a` library, which you can use in your projects by linking it.
 
 ## Usage 🖥️
 
@@ -62,7 +60,7 @@ int	main(void)
 	fd = open("./montexte.txt", O_RDONLY);
 	if (fd == -1)
 	{
-		perror("Erreur lors de l'ouverture du fichier");
+		perror("Error while trying to open file");
 		return (1);
 	}
 
